@@ -17,4 +17,5 @@ public class ClienteSocket {
     public Socket getSocket() {
         return socket;
     }
+    //crear metodo para enviar el paquete al servidor UNO
 }
