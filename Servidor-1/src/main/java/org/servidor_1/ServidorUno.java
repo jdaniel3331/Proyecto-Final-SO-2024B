@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServidorUno {
-    private final int PORT = 3000;
+    private final int PORT = 3003;
     private ServerSocket serverSocket;
 
     public ServidorUno() {
