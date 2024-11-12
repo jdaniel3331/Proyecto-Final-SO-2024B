@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServidorUno {
+public class ServidorAlpha {
     private final int PORT = 3003;
     private ServerSocket serverSocket;
 
-    public ServidorUno() {
+    public ServidorAlpha() {
         try {
             this.serverSocket = new ServerSocket(PORT);
-            System.out.println("Servidor UNO iniciado. Esperando conexiones...");
+            System.out.println("Servidor ALPHA iniciado. Esperando conexiones...");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -22,9 +22,14 @@ public class ServidorUno {
             try {
                 Socket clienteSocket = this.serverSocket.accept();
                 System.out.println("Cliente conectado desde "+clienteSocket.getInetAddress());
+                transformar(clienteSocket);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+    public void transformar(Socket socket){
+        ClienteHandler clienteHandler = new ClienteHandler(socket);
+        clienteHandler.start();
     }
 }
