@@ -1,12 +1,15 @@
 package org.servidor_1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.servidor_1.dtos.PaqueteCliente;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
@@ -25,24 +28,26 @@ public class ClienteHandler extends Thread {
             String jsonRecibido = in.readLine();
             PaqueteCliente paqueteCliente = mapper.readValue(jsonRecibido,PaqueteCliente.class);
             System.out.println("Imagen recibida desde "+paqueteCliente.getIpCliente());
-            //proc(paqueteCliente);
+            System.out.println(paqueteCliente.getNombreImg());
+            proc(paqueteCliente);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     //crear metodo que realize la conversion color -> b/n
-    /*
+
     public void proc(PaqueteCliente paqueteCliente){
         // Convert image to grayscale
-        Mat originImage = paqueteCliente.getImagenCargada();;
+        MatOfByte mob = new MatOfByte(paqueteCliente.getImagenEnBytes());
+        Mat originImage = Imgcodecs.imdecode(mob, Imgcodecs.IMREAD_UNCHANGED);
         Mat grayImage = new Mat(originImage.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(originImage, grayImage, Imgproc.COLOR_BGR2GRAY);
-        System.out.println(grayImage);
+        //System.out.println(grayImage);
 
         // Send the grayscale image to server 2
-        sendImageToServer2(grayImage);
-    }*/
+        //sendImageToServer2(grayImage);
+    }
 
     //crear otro método para mandar la imagen al servidor 2
     private void sendImageToServer2(Mat grayImage) {

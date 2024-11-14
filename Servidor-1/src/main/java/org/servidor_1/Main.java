@@ -6,6 +6,5 @@ public class Main {
         ServidorAlpha alpha = new ServidorAlpha();
         alpha.aceptarConexiones();
 
-
     }
 }
