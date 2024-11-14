@@ -1,8 +1,11 @@
 package org.servidor_1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.opencv.core.Mat;
 import org.servidor_1.dtos.PaqueteCliente;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,9 +19,12 @@ public class ClienteHandler extends Thread {
 
     @Override
     public void run(){
-        try(ObjectInputStream in = new ObjectInputStream(this.servidorSocket.getInputStream())){
-            PaqueteCliente paqueteCliente = (PaqueteCliente) in.readObject();
-            System.out.println("Objeto recibido");
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            BufferedReader in = new BufferedReader(new InputStreamReader(this.servidorSocket.getInputStream()));
+            String jsonRecibido = in.readLine();
+            PaqueteCliente paqueteCliente = mapper.readValue(jsonRecibido,PaqueteCliente.class);
+            System.out.println("Imagen recibida desde "+paqueteCliente.getIpCliente());
             //proc(paqueteCliente);
         }catch (Exception e){
             e.printStackTrace();
