@@ -1,6 +1,9 @@
 package org.servidor_1;
 
+import org.servidor_1.dtos.PaqueteCliente;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 

@@ -1,5 +1,4 @@
-package org.cliente.dtos;
-
+package org.servidor_1.dtos;
 import java.io.Serializable;
 
 public class PaqueteCliente implements Serializable {
@@ -29,5 +28,4 @@ public class PaqueteCliente implements Serializable {
     public void setImagenEnBytes(byte[] imagenEnBytes) {
         this.imagenEnBytes = imagenEnBytes;
     }
-
 }
