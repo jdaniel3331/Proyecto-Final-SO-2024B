@@ -7,6 +7,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import java.io.Serializable;
 
 public class PaqueteCliente implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String ipCliente;
     private byte[] imagenEnBytes;
 

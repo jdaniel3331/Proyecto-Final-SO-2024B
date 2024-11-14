@@ -27,7 +27,7 @@ public class Main {
 
         ClienteSocket clienteSocket = new ClienteSocket(IP_SERVER_ALPHA,ALPHA_SERVER_PORT);
         PaqueteCliente paqueteCliente = new PaqueteCliente(Imgcodecs.imread(rutaImagen),clienteSocket.getSocket().getInetAddress().toString());
-        //clienteSocket.enviarImg(paqueteCliente);
+        clienteSocket.enviarImg(paqueteCliente);
         //guardarla en la carpeta de descargas dependiendo del SO
         // color -> b/n -> cambiar el contraste subir
     }
