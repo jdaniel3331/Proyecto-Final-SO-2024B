@@ -11,10 +11,18 @@ import java.net.UnknownHostException;
 public class Main {
     private static final String IP_SERVER_ALPHA = "127.0.0.1";
     private static final int ALPHA_SERVER_PORT = 3003;
+
+    private static String getExtensionImg(String nombreImg){
+        int i = nombreImg.lastIndexOf(".");
+        String ext = "";
+        if (i > 0 && i < nombreImg.length() - 1){
+            ext = nombreImg.substring(i);
+        }
+        return ext;
+    }
     public static void main(String[] args) {
         nu.pattern.OpenCV.loadLocally();
         String rutaImagen;
-        
         // Detectar el sistema operativo
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
@@ -34,9 +42,8 @@ public class Main {
             File archivo = new File(rutaImagen);
             String nombreImagen = archivo.getName();
 
-
             MatOfByte aux = new MatOfByte();
-            Imgcodecs.imencode(".jpg", Imgcodecs.imread(rutaImagen), aux);
+            Imgcodecs.imencode(getExtensionImg(nombreImagen), Imgcodecs.imread(rutaImagen), aux);
             byte[] imgBytes = aux.toArray();
 
             String localIpAddress = "";
