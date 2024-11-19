@@ -15,8 +15,8 @@ import java.net.Socket;
 
 public class ClienteHandler extends Thread {
     private Socket servidorSocket;
-    private final String IP_SERVER_BETA = "";
-    private final int BETA_SERVER_PORT = 12345;
+    private final String IP_SERVER_BETA = "127.0.0.1";
+    private final int BETA_SERVER_PORT = 3004;
 
     public ClienteHandler(Socket socket){
         this.servidorSocket = socket;
@@ -37,14 +37,14 @@ public class ClienteHandler extends Thread {
         }
     }
 
-    public void proc(PaqueteCliente paqueteCliente){
+    private void proc(PaqueteCliente paqueteCliente){
         MatOfByte mob = new MatOfByte(paqueteCliente.getImagenEnBytes());
         Mat originImage = Imgcodecs.imdecode(mob, Imgcodecs.IMREAD_UNCHANGED);
         Mat grayImage = new Mat(originImage.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(originImage, grayImage, Imgproc.COLOR_BGR2GRAY);
 
         // Send the grayscale image to server 2
-        //sendImageToServer2(grayImage);
+        sendToBetaServer(grayImage,paqueteCliente);
         //boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Downloads/"+paqueteCliente.getNombreImg(),grayImage);
     }
 
