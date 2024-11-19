@@ -1,15 +1,15 @@
 package org.servidor_1;
 
-import org.servidor_1.dtos.PaqueteCliente;
-
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServidorAlpha {
     private final int PORT = 3003;
     private ServerSocket serverSocket;
+
+    /*
+    * Falta manejar excepciones*/
 
     public ServidorAlpha() {
         try {
@@ -24,15 +24,12 @@ public class ServidorAlpha {
         while (true){
             try {
                 Socket clienteSocket = this.serverSocket.accept();
-                System.out.println("Cliente conectado desde "+clienteSocket.getInetAddress());
-                transformar(clienteSocket);
+                System.out.println("Cliente conectado desde " + clienteSocket.getInetAddress());
+                ClienteHandler clienteHandler = new ClienteHandler(clienteSocket);
+                clienteHandler.start();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-    }
-    public void transformar(Socket socket){
-        ClienteHandler clienteHandler = new ClienteHandler(socket);
-        clienteHandler.start();
     }
 }

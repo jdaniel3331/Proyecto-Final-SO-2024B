@@ -30,6 +30,7 @@ public class ClienteSocket {
             PrintWriter out = new PrintWriter(this.socket.getOutputStream(),true);
             out.println(json);
             System.out.println("Imagen enviada al servidor ALPHA");
+            out.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
