@@ -8,6 +8,7 @@ import org.servidorBeta.dtos.PaqueteCliente;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClienteHandler extends Thread {
@@ -37,7 +38,7 @@ public class ClienteHandler extends Thread {
         double alpha = 1.5;
         double beta = 20;
         grayImg.convertTo(imagenAjustada,-1,alpha,beta);
-        //boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Documents/"+paqueteCliente.getNombreImg(),imagenAjustada);
+        boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Documents/"+paqueteCliente.getNombreImg(),imagenAjustada);
     }
     private String obtenerExtension(String nombreImg){
         int i = nombreImg.lastIndexOf(".");
@@ -54,6 +55,19 @@ public class ClienteHandler extends Thread {
     }
     private void sendToCliente(Mat imgProc, PaqueteCliente paqueteCliente){
         PaqueteCliente paraCliente = new PaqueteCliente(imageToBytes(imgProc,paqueteCliente), paqueteCliente.getIpCliente(), paqueteCliente.getNombreImg());
-        
+        try{
+            Socket socket = new Socket(paqueteCliente.getIpCliente(),3003);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(paqueteCliente);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream());
+            out.println(json);
+            System.out.println("Imagen procesada enviada de vuelta al cliente");
+            out.close();
+            socket.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package org.cliente;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cliente.dtos.PaqueteCliente;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -7,6 +8,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Main {
     private static final String IP_SERVER_ALPHA = "127.0.0.1";
@@ -20,23 +22,23 @@ public class Main {
         }
         return ext;
     }
+    private static String getRutaGuardado(){
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            return "C:\\Users\\Lenovo\\Downloads\\";
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+            String nombreUsuario = System.getenv("USER");
+            return "/home/"+nombreUsuario+"/Downloads/";
+        } else {
+            return "desconocido";
+        }
+    }
     public static void main(String[] args) {
         nu.pattern.OpenCV.loadLocally();
         String rutaImagen;
-        // Detectar el sistema operativo
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
-            //System.out.println("El sistema operativo es Windows");
-            rutaImagen = "C:\\Users\\Lenovo\\Downloads\\gato.jpg";
-            // Ruta para Windows
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
-            //System.out.println("El sistema operativo es Unix/Linux/Mac");
-            rutaImagen = "/home/jdaniel/Downloads/gato.jpg";
-            // Ruta para Unix/Linux/Mac
-        } else {
-            //System.out.println("Sistema operativo no soportado");
-            rutaImagen = "";
-        }
+        Scanner in = new Scanner(System.in);
+        System.out.println("Ingresa la ruta completa de tu imagen a procesar: ");
+        rutaImagen = in.nextLine();
 
         if(!rutaImagen.isEmpty()) {
             File archivo = new File(rutaImagen);
@@ -57,6 +59,7 @@ public class Main {
             PaqueteCliente paqueteCliente = new PaqueteCliente(imgBytes, localIpAddress, nombreImagen);
 
             clienteSocket.enviarImg(paqueteCliente);
+            clienteSocket.recibirImg(getRutaGuardado());
             //guardarla en la carpeta de descargas dependiendo del SO
             // color -> b/n -> cambiar el contraste subir
         }
