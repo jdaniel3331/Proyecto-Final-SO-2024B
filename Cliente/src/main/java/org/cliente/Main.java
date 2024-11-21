@@ -43,6 +43,7 @@ public class Main {
         if(!rutaImagen.isEmpty()) {
             File archivo = new File(rutaImagen);
             String nombreImagen = archivo.getName();
+            System.out.println(nombreImagen);
 
             MatOfByte aux = new MatOfByte();
             Imgcodecs.imencode(getExtensionImg(nombreImagen), Imgcodecs.imread(rutaImagen), aux);

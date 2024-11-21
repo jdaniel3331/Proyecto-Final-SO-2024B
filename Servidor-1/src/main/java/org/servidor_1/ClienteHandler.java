@@ -42,10 +42,8 @@ public class ClienteHandler extends Thread {
         Mat originImage = Imgcodecs.imdecode(mob, Imgcodecs.IMREAD_UNCHANGED);
         Mat grayImage = new Mat(originImage.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(originImage, grayImage, Imgproc.COLOR_BGR2GRAY);
-
-        // Send the grayscale image to server 2
         sendToBetaServer(grayImage,paqueteCliente);
-        //boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Downloads/"+paqueteCliente.getNombreImg(),grayImage);
+
     }
 
     private byte[] imageToBytes(Mat grayImg,PaqueteCliente paqueteCliente){

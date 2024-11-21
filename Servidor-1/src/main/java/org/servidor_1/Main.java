@@ -5,6 +5,5 @@ public class Main {
         nu.pattern.OpenCV.loadLocally();
         ServidorAlpha alpha = new ServidorAlpha();
         alpha.aceptarConexiones();
-
     }
 }

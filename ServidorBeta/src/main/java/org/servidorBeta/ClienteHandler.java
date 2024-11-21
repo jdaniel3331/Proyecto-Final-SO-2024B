@@ -38,7 +38,8 @@ public class ClienteHandler extends Thread {
         double alpha = 1.5;
         double beta = 20;
         grayImg.convertTo(imagenAjustada,-1,alpha,beta);
-        boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Documents/"+paqueteCliente.getNombreImg(),imagenAjustada);
+        sendToCliente(imagenAjustada,paqueteCliente);
+        //boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Downloads/"+paqueteCliente.getNombreImg(),imagenAjustada);
     }
     private String obtenerExtension(String nombreImg){
         int i = nombreImg.lastIndexOf(".");
@@ -56,7 +57,7 @@ public class ClienteHandler extends Thread {
     private void sendToCliente(Mat imgProc, PaqueteCliente paqueteCliente){
         PaqueteCliente paraCliente = new PaqueteCliente(imageToBytes(imgProc,paqueteCliente), paqueteCliente.getIpCliente(), paqueteCliente.getNombreImg());
         try{
-            Socket socket = new Socket(paqueteCliente.getIpCliente(),3003);
+            Socket socket = new Socket(paqueteCliente.getIpCliente(),3005);
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(paqueteCliente);
 
