@@ -1,8 +1,6 @@
 package org.cliente.dtos;
 
-import java.io.Serializable;
-
-public class PaqueteCliente implements Serializable {
+public class PaqueteCliente {
     private String ipCliente;
     private byte[] imagenEnBytes;
     private String nombreImg;

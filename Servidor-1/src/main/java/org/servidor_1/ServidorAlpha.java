@@ -7,11 +7,10 @@ import java.net.Socket;
 public class ServidorAlpha {
     private final int PORT = 3003;
     private ServerSocket serverSocket;
+    private String ipBeta;
 
-    /*
-    * Falta manejar excepciones*/
-
-    public ServidorAlpha() {
+    public ServidorAlpha(String ipBeta) {
+        this.ipBeta = ipBeta;
         try {
             this.serverSocket = new ServerSocket(PORT);
             System.out.println("Servidor ALPHA iniciado. Esperando conexiones...");
@@ -25,7 +24,7 @@ public class ServidorAlpha {
             try {
                 Socket clienteSocket = this.serverSocket.accept();
                 System.out.println("Cliente conectado desde " + clienteSocket.getInetAddress());
-                ClienteHandler clienteHandler = new ClienteHandler(clienteSocket);
+                ClienteHandler clienteHandler = new ClienteHandler(clienteSocket, ipBeta);
                 clienteHandler.start();
             } catch (IOException e) {
                 throw new RuntimeException(e);

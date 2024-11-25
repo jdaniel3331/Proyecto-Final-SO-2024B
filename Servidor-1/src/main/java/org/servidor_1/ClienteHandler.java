@@ -15,11 +15,12 @@ import java.net.Socket;
 
 public class ClienteHandler extends Thread {
     private Socket servidorSocket;
-    private final String IP_SERVER_BETA = "127.0.0.1";
+    private String ipBeta;
     private final int BETA_SERVER_PORT = 3004;
 
-    public ClienteHandler(Socket socket){
+    public ClienteHandler(Socket socket, String ipBeta){
         this.servidorSocket = socket;
+        this.ipBeta = ipBeta;
     }
 
     @Override
@@ -30,7 +31,6 @@ public class ClienteHandler extends Thread {
             String jsonRecibido = in.readLine();
             PaqueteCliente paqueteCliente = mapper.readValue(jsonRecibido,PaqueteCliente.class);
             System.out.println("Imagen recibida desde "+paqueteCliente.getIpCliente());
-            //System.out.println(paqueteCliente.getNombreImg());
             proc(paqueteCliente);
         }catch (Exception e){
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class ClienteHandler extends Thread {
     private void sendToBetaServer(Mat grayImage, PaqueteCliente p) {
         PaqueteCliente paqueteEnviar = new PaqueteCliente(imageToBytes(grayImage,p),p.getIpCliente(),p.getNombreImg());
         try {
-            Socket socket = new Socket(IP_SERVER_BETA, BETA_SERVER_PORT);
+            Socket socket = new Socket(ipBeta, BETA_SERVER_PORT);
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(paqueteEnviar);
 

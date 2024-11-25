@@ -1,6 +1,7 @@
 package org.servidorBeta;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -26,20 +27,20 @@ public class ClienteHandler extends Thread {
             String jsonRecibido = in.readLine();
             PaqueteCliente paqueteCliente = mapper.readValue(jsonRecibido,PaqueteCliente.class);
             System.out.println("Imagen recibida desde "+paqueteCliente.getIpCliente());
-            cambiarContraste(paqueteCliente);
+            espejoImagen(paqueteCliente);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-    private void cambiarContraste(PaqueteCliente paqueteCliente){
+    private void espejoImagen(PaqueteCliente paqueteCliente){
         MatOfByte mob = new MatOfByte(paqueteCliente.getImagenEnBytes());
         Mat grayImg = Imgcodecs.imdecode(mob, Imgcodecs.IMREAD_UNCHANGED);
         Mat imagenAjustada = new Mat();
-        double alpha = 1.5;
-        double beta = 20;
-        grayImg.convertTo(imagenAjustada,-1,alpha,beta);
-        sendToCliente(imagenAjustada,paqueteCliente);
+        Core.flip(grayImg,imagenAjustada,1);
+
         //boolean wasSaved = Imgcodecs.imwrite("/home/jdaniel/Downloads/"+paqueteCliente.getNombreImg(),imagenAjustada);
+        sendToCliente(imagenAjustada,paqueteCliente);
+
     }
     private String obtenerExtension(String nombreImg){
         int i = nombreImg.lastIndexOf(".");
@@ -54,12 +55,12 @@ public class ClienteHandler extends Thread {
         Imgcodecs.imencode(obtenerExtension(paqueteCliente.getNombreImg()),grayImg,aux);
         return aux.toArray();
     }
-    private void sendToCliente(Mat imgProc, PaqueteCliente paqueteCliente){
-        PaqueteCliente paraCliente = new PaqueteCliente(imageToBytes(imgProc,paqueteCliente), paqueteCliente.getIpCliente(), paqueteCliente.getNombreImg());
+    private void sendToCliente(Mat imgProc, PaqueteCliente paquete){
+        PaqueteCliente paraCliente = new PaqueteCliente(imageToBytes(imgProc,paquete), paquete.getIpCliente(), paquete.getNombreImg());
         try{
-            Socket socket = new Socket(paqueteCliente.getIpCliente(),3005);
+            Socket socket = new Socket(paraCliente.getIpCliente(),3005);
             ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(paqueteCliente);
+            String json = mapper.writeValueAsString(paraCliente);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             out.println(json);
