@@ -50,6 +50,18 @@ public class ClienteSocket {
         Imgcodecs.imwrite(rutaGuardar,imagenProcesada);
     }
 
+    private String renombrar(String nombreImg){
+        int i = nombreImg.lastIndexOf('.');
+        String nombre = "";
+        String ext = "";
+
+        if(i > 0 && i < nombreImg.length()-1){
+            nombre = nombreImg.substring(0,i);
+            ext = nombreImg.substring(i);
+        }
+        return nombre+"_proc"+ext;
+    }
+
     public void recibirImg(String ruta){
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -59,7 +71,7 @@ public class ClienteSocket {
             String jsonImg = in.readLine();
             PaqueteCliente paqueteCliente = mapper.readValue(jsonImg, PaqueteCliente.class);
             System.out.println("Imgen recibida desde el servidor BETA");
-            guardarImg(paqueteCliente.getImagenEnBytes(),ruta+paqueteCliente.getNombreImg());
+            guardarImg(paqueteCliente.getImagenEnBytes(),ruta+renombrar(paqueteCliente.getNombreImg()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
