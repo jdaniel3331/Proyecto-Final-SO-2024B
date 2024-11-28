@@ -1,6 +1,6 @@
-package org.cliente.dtos;
+package org.servidor_1.dtos;
 
-public class PaqueteCliente {
+public class PaqueteCliente{
     private String ipCliente;
     private byte[] imagenEnBytes;
     private String nombreImg;

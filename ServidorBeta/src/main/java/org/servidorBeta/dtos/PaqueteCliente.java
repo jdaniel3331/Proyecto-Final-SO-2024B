@@ -1,4 +1,4 @@
-package org.cliente.dtos;
+package org.servidorBeta.dtos;
 
 public class PaqueteCliente {
     private String ipCliente;
